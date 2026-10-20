@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Portfolio of Nathaniel, UNIMAS student">
+  <title>Nathaniel | Portfolio</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Skip link for keyboard users (accessibility) -->
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <!-- Persistent navigation bar -->
+  <header class="site-header">
+    <nav class="navbar" aria-label="Main navigation">
+      <a class="logo" href="#home">Nathaniel</a>
+
+      <!-- JS feature 1: hamburger toggle -->
+      <button class="nav-toggle" id="navToggle"
+              aria-expanded="false" aria-controls="navMenu">
+        Menu
+      </button>
+
+      <ul class="nav-menu" id="navMenu">
+        <li><a href="#home">Home</a></li>
+        <li><a href="#projects">Projects</a></li>
+        <li><a href="#about">About Me</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+
+      <!-- JS feature 2: theme toggle -->
+      <button class="theme-toggle" id="themeToggle"
+              aria-label="Switch between light and dark theme">
+        Theme
+      </button>
+    </nav>
+  </header>
+
+  <main id="main">
+
+    <!-- HOME -->
+    <section id="home" class="section hero">
+      <h1>Hi, I'm Nathaniel Adam Luta Anak Nicholas</h1>
+      <!-- JS feature: typing effect can target this element -->
+      <p class="tagline" id="tagline">Don't Lose Sight</p>
+      <a class="btn" href="#projects">View my projects</a>
+    </section>
+
+    <!-- PROJECTS (minimum 5 items) -->
+    <section id="projects" class="section">
+      <h2>Projects</h2>
+
+      <!-- JS feature 4: filter buttons -->
+      <div class="filters" role="group" aria-label="Filter projects">
+        <button class="filter-btn active" data-filter="all">All</button>
+        <button class="filter-btn" data-filter="database">Database</button>
+        <button class="filter-btn" data-filter="uiux">UI/UX</button>
+        <button class="filter-btn" data-filter="web">Web</button>
+      </div>
+
+      <div class="project-grid">
+        <article class="project-card" data-category="uiux">
+          <img src="images/project1.png" alt="Describe what the screenshot shows">
+          <h3>Project 1 title</h3>
+          <p>Short description of what you built and your role.</p>
+          <a href="#" target="_blank" rel="noopener">View project</a>
+        </article>
+
+        <article class="project-card" data-category="database">
+          <img src="images/project2.png" alt="Describe what the screenshot shows">
+          <h3>Project 2 title</h3>
+          <p>Short description of what you built and your role.</p>
+          <a href="#" target="_blank" rel="noopener">View project</a>
+        </article>
+
+        <article class="project-card" data-category="web">
+          <img src="images/project3.png" alt="Describe what the screenshot shows">
+          <h3>Project 3 title</h3>
+          <p>Short description of what you built and your role.</p>
+          <a href="#" target="_blank" rel="noopener">View project</a>
+        </article>
+
+        <article class="project-card" data-category="database">
+          <img src="images/project4.png" alt="Describe what the screenshot shows">
+          <h3>Project 4 title</h3>
+          <p>Short description of what you built and your role.</p>
+          <a href="#" target="_blank" rel="noopener">View project</a>
+        </article>
+
+        <article class="project-card" data-category="uiux">
+          <img src="images/project5.png" alt="Describe what the screenshot shows">
+          <h3>Project 5 title</h3>
+          <p>Short description of what you built and your role.</p>
+          <a href="#" target="_blank" rel="noopener">View project</a>
+        </article>
+      </div>
+    </section>
+
+    <!-- ABOUT -->
+    <section id="about" class="section">
+      <h2>About Me</h2>
+      <img src="images/profile.jpg" alt="Photo of Nathaniel">
+      <p>Write 2 to 3 sentences about yourself in your own words.</p>
+      <h3>Skills</h3>
+      <ul class="skills">
+        <li>HTML</li>
+        <li>CSS</li>
+        <li>JavaScript</li>
+      </ul>
+    </section>
+
+    <!-- CONTACT -->
+    <section id="contact" class="section">
+      <h2>Contact</h2>
+      <p>Email: <a href="mailto:your-email@example.com">nielluta@gmail.com</a></p>
+
+      <!-- JS feature 5: form validation (front-end only) -->
+      <form id="contactForm" novalidate>
+        <label for="name">Name</label>
+        <input type="text" id="name" name="name" required>
+        <span class="error" id="nameError" role="alert"></span>
+
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" required>
+        <span class="error" id="emailError" role="alert"></span>
+
+        <label for="message">Message</label>
+        <textarea id="message" name="message" rows="5" required></textarea>
+        <span class="error" id="messageError" role="alert"></span>
+
+        <button type="submit" class="btn">Send message</button>
+        <p id="formStatus" role="status"></p>
+      </form>
+    </section>
+
+  </main>
+
+  <footer class="site-footer">
+    <p>&copy; 2026 Nathaniel</p>
+  </footer>
+
+  <!-- JS feature 6: back-to-top button -->
+  <button id="backToTop" class="back-to-top" aria-label="Back to top" hidden>Top</button>
+
+  <script src="script.js"></script>
+</body>
+</html>
