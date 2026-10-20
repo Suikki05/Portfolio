@@ -1,218 +1,386 @@
 /* ==========================================================
-   script.js
-   Features:
-   1. Mobile hamburger menu
-   2. Dark/light theme toggle (remembered between visits)
-   3. Active nav link while scrolling
-   4. Project filter buttons
-   5. Contact form validation
-   6. Back-to-top button
-   7. Typing effect on the home tagline
+   1. VARIABLES (colors live here so the dark theme is easy)
+   ========================================================== */
+:root {
+  --bg: #ffffff;
+  --bg-alt: #f2f4f7;
+  --text: #1a1a1a;
+  --accent: #0b5ed7;
+  --btn-text: #ffffff;
+  --border: #c9ced6;
+  --error: #b00020;
+}
+
+/* JS will add data-theme="dark" to the <html> element */
+[data-theme="dark"] {
+  --bg: #121212;
+  --bg-alt: #1e1e1e;
+  --text: #f1f1f1;
+  --accent: #6ea8fe;
+  --btn-text: #101010;
+  --border: #3a3a3a;
+  --error: #ff8a80;
+}
+
+/* ==========================================================
+   2. BASE STYLES
+   ========================================================== */
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 70px; /* stops the sticky nav covering section titles */
+}
+
+body {
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+  line-height: 1.6;
+  background: var(--bg);
+  color: var(--text);
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+a {
+  color: var(--accent);
+}
+
+/* Clear focus state for keyboard users (accessibility requirement) */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 3px;
+}
+
+/* Makes the HTML "hidden" attribute always work */
+[hidden] {
+  display: none !important;
+}
+
+/* ==========================================================
+   3. SKIP LINK
+   ========================================================== */
+.skip-link {
+  position: absolute;
+  left: -999px;
+}
+
+.skip-link:focus {
+  left: 10px;
+  top: 10px;
+  background: var(--bg);
+  padding: 8px 12px;
+  z-index: 200;
+}
+
+/* ==========================================================
+   4. NAVIGATION (mobile first)
+   ========================================================== */
+.site-header {
+  position: sticky;
+  top: 0;
+  background: var(--bg);
+  border-bottom: 1px solid var(--border);
+  z-index: 100;
+}
+
+.navbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 10px 20px;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.logo {
+  font-weight: bold;
+  font-size: 1.2rem;
+  text-decoration: none;
+  color: var(--text);
+}
+
+.nav-menu {
+  display: none;            /* hidden on mobile until the toggle is pressed */
+  flex-direction: column;
+  width: 100%;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.nav-menu.open {            /* JS adds the "open" class */
+  display: flex;
+}
+
+.nav-menu a {
+  display: block;
+  padding: 10px 0;
+  text-decoration: none;
+  color: var(--text);
+}
+
+.nav-menu a.active {        /* JS marks the current section */
+  color: var(--accent);
+  font-weight: bold;
+}
+
+.nav-toggle,
+.theme-toggle {
+  background: none;
+  border: 1px solid var(--border);
+  color: var(--text);
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+/* ==========================================================
+   5. SECTIONS
+   ========================================================== */
+.section {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 60px 20px;
+}
+
+.hero {
+  text-align: center;
+  padding-top: 90px;
+  padding-bottom: 90px;
+}
+
+.hero h1 {
+  font-size: 2rem;
+  margin: 0 0 10px;
+}
+
+.tagline {
+  font-size: 1.1rem;
+  margin-bottom: 24px;
+}
+
+.btn {
+  display: inline-block;
+  background: var(--accent);
+  color: var(--btn-text);
+  padding: 10px 20px;
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+/* ==========================================================
+   6. PROJECTS
+   ========================================================== */
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 24px;
+}
+
+.filter-btn {
+  background: var(--bg);
+  color: var(--text);
+  border: 1px solid var(--border);
+  padding: 6px 14px;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+.filter-btn.active {
+  background: var(--accent);
+  color: var(--btn-text);
+  border-color: var(--accent);
+}
+
+.project-grid {
+  display: grid;
+  grid-template-columns: 1fr;   /* 1 column on mobile */
+  gap: 20px;
+}
+
+.project-card {
+  background: var(--bg-alt);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 16px;
+}
+
+.project-card.hide {            /* JS adds "hide" when a filter excludes it */
+  display: none;
+}
+
+.project-card h3 {
+  margin: 12px 0 6px;
+}
+
+/* ==========================================================
+   7. ABOUT
+   ========================================================== */
+#about img {
+  width: 160px;
+  border-radius: 50%;
+  margin-bottom: 16px;
+}
+
+.skills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  list-style: none;
+  padding: 0;
+}
+
+.skills li {
+  background: var(--bg-alt);
+  border: 1px solid var(--border);
+  padding: 4px 12px;
+  border-radius: 20px;
+}
+
+/* ==========================================================
+   8. CONTACT FORM
+   ========================================================== */
+form {
+  max-width: 500px;
+}
+
+label {
+  display: block;
+  margin-top: 14px;
+  font-weight: bold;
+}
+
+input,
+textarea {
+  width: 100%;
+  padding: 10px;
+  margin-top: 4px;
+  font-size: 1rem;
+  font-family: inherit;
+  background: var(--bg);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+}
+
+.error {
+  display: block;
+  color: var(--error);
+  font-size: 0.9rem;
+  min-height: 1.2em;
+}
+
+form .btn {
+  margin-top: 16px;
+}
+
+/* Extra feature styles */
+.greeting {
+  font-size: 1.1rem;
+  margin: 0 0 6px;
+}
+
+#projectSearch {
+  max-width: 400px;
+  margin-bottom: 8px;
+}
+
+#projectCount {
+  margin: 0 0 20px;
+}
+
+.counter {
+  display: block;
+  text-align: right;
+  font-size: 0.9rem;
+}
+
+.copy-btn {
+  background: none;
+  border: 1px solid var(--border);
+  color: var(--text);
+  padding: 4px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  margin-left: 8px;
+}
+
+/* ==========================================================
+   9. FOOTER AND BACK-TO-TOP
+   ========================================================== */
+.site-footer {
+  text-align: center;
+  padding: 20px;
+  border-top: 1px solid var(--border);
+}
+
+.back-to-top {
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  background: var(--accent);
+  color: var(--btn-text);
+  border: none;
+  border-radius: 6px;
+  padding: 10px 14px;
+  cursor: pointer;
+}
+
+/* ==========================================================
+   10. RESPONSIVE BREAKPOINTS
    ========================================================== */
 
-/* ---------- 1. Mobile hamburger menu ---------- */
-function initMenu() {
-  const toggle = document.getElementById("navToggle");
-  const menu = document.getElementById("navMenu");
-  if (!toggle || !menu) return;
-
-  toggle.addEventListener("click", function () {
-    const isOpen = menu.classList.toggle("open");
-    toggle.setAttribute("aria-expanded", String(isOpen));
-  });
-
-  // Close the menu after a link is clicked (useful on mobile)
-  menu.querySelectorAll("a").forEach(function (link) {
-    link.addEventListener("click", function () {
-      menu.classList.remove("open");
-      toggle.setAttribute("aria-expanded", "false");
-    });
-  });
-}
-
-/* ---------- 2. Theme toggle ---------- */
-function initTheme() {
-  const button = document.getElementById("themeToggle");
-  const root = document.documentElement; // the <html> element
-  if (!button) return;
-
-  // Load the saved theme if there is one
-  try {
-    const saved = localStorage.getItem("theme");
-    if (saved) {
-      root.setAttribute("data-theme", saved);
-    }
-  } catch (error) {
-    // localStorage can be blocked; the site still works without it
+/* Tablet: 768px and up */
+@media (min-width: 768px) {
+  .project-grid {
+    grid-template-columns: repeat(2, 1fr);
   }
 
-  button.addEventListener("click", function () {
-    const next = root.getAttribute("data-theme") === "dark" ? "light" : "dark";
-    root.setAttribute("data-theme", next);
-    try {
-      localStorage.setItem("theme", next);
-    } catch (error) {
-      // ignore
-    }
-  });
+  .hero h1 {
+    font-size: 2.6rem;
+  }
 }
 
-/* ---------- 3. Highlight the active nav link ---------- */
-function initActiveLink() {
-  const sections = document.querySelectorAll("main section");
-  const links = document.querySelectorAll(".nav-menu a");
-  if (sections.length === 0 || links.length === 0) return;
-
-  function update() {
-    let currentId = "home";
-
-    // The last section whose top has passed the nav bar is the current one
-    sections.forEach(function (section) {
-      if (window.scrollY >= section.offsetTop - 100) {
-        currentId = section.id;
-      }
-    });
-
-    links.forEach(function (link) {
-      const isCurrent = link.getAttribute("href") === "#" + currentId;
-      link.classList.toggle("active", isCurrent);
-    });
+/* Desktop: 1024px and up */
+@media (min-width: 1024px) {
+  .nav-toggle {
+    display: none;            /* menu is always visible on desktop */
   }
 
-  window.addEventListener("scroll", update);
-  update();
-}
-
-/* ---------- 4. Project filter ---------- */
-function initFilter() {
-  const buttons = document.querySelectorAll(".filter-btn");
-  const cards = document.querySelectorAll(".project-card");
-  if (buttons.length === 0) return;
-
-  buttons.forEach(function (button) {
-    button.addEventListener("click", function () {
-      const filter = button.getAttribute("data-filter");
-
-      // Move the active style to the clicked button
-      buttons.forEach(function (b) {
-        b.classList.remove("active");
-      });
-      button.classList.add("active");
-
-      // Show matching cards, hide the rest
-      cards.forEach(function (card) {
-        const category = card.getAttribute("data-category");
-        const matches = filter === "all" || category === filter;
-        card.classList.toggle("hide", !matches);
-      });
-    });
-  });
-}
-
-/* ---------- 5. Contact form validation ---------- */
-function initForm() {
-  const form = document.getElementById("contactForm");
-  const status = document.getElementById("formStatus");
-  const nameInput = document.getElementById("name");
-  const emailInput = document.getElementById("email");
-  const messageInput = document.getElementById("message");
-  if (!form || !status || !nameInput || !emailInput || !messageInput) return;
-
-  // Show or clear an error message under a field
-  function setError(id, message) {
-    const box = document.getElementById(id + "Error");
-    if (box) {
-      box.textContent = message;
-    }
+  .nav-menu {
+    display: flex;
+    flex-direction: row;
+    width: auto;
+    gap: 24px;
   }
 
-  form.addEventListener("submit", function (event) {
-    event.preventDefault(); // stop the page from reloading
-
-    const name = nameInput.value.trim();
-    const email = emailInput.value.trim();
-    const message = messageInput.value.trim();
-    let valid = true;
-
-    // Reset old messages
-    setError("name", "");
-    setError("email", "");
-    setError("message", "");
-    status.textContent = "";
-
-    if (name === "") {
-      setError("name", "Please enter your name.");
-      valid = false;
-    }
-
-    // Simple email pattern: text, @, text, dot, text
-    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailPattern.test(email)) {
-      setError("email", "Please enter a valid email address.");
-      valid = false;
-    }
-
-    if (message.length < 10) {
-      setError("message", "Message must be at least 10 characters.");
-      valid = false;
-    }
-
-    if (valid) {
-      // Front-end only: nothing is sent anywhere
-      status.textContent = "Thank you, " + name + ". Your message is ready to send.";
-      form.reset();
-    }
-  });
-}
-
-/* ---------- 6. Back-to-top button ---------- */
-function initBackToTop() {
-  const button = document.getElementById("backToTop");
-  if (!button) return;
-
-  // Show the button only after scrolling down a bit
-  window.addEventListener("scroll", function () {
-    button.hidden = window.scrollY < 300;
-  });
-
-  button.addEventListener("click", function () {
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  });
-}
-
-/* ---------- 7. Typing effect ---------- */
-function initTyping() {
-  const element = document.getElementById("tagline");
-  if (!element) return;
-
-  const fullText = element.textContent;
-
-  // Skip the animation for users who prefer reduced motion
-  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-    return;
+  .project-grid {
+    grid-template-columns: repeat(3, 1fr);
   }
-
-  element.textContent = "";
-  let index = 0;
-
-  function typeNext() {
-    if (index < fullText.length) {
-      element.textContent += fullText.charAt(index);
-      index++;
-      setTimeout(typeNext, 50);
-    }
-  }
-
-  typeNext();
 }
 
-/* ---------- Start everything when the page is ready ---------- */
-document.addEventListener("DOMContentLoaded", function () {
-  initMenu();
-  initTheme();
-  initActiveLink();
-  initFilter();
-  initForm();
-  initBackToTop();
-  initTyping();
-});
+/* Respect users who turn off animations in their device settings */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
