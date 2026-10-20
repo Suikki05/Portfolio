@@ -42,6 +42,7 @@
 
     <!-- HOME -->
     <section id="home" class="section hero">
+      <p class="greeting" id="greeting"></p>
       <h1>Hi, I'm Nathaniel Adam Luta Anak Nicholas</h1>
       <!-- JS feature: typing effect can target this element -->
       <p class="tagline" id="tagline">Don't Lose Sight</p>
@@ -59,6 +60,11 @@
         <button class="filter-btn" data-filter="uiux">UI/UX</button>
         <button class="filter-btn" data-filter="web">Web</button>
       </div>
+
+      <!-- JS feature 9: project search -->
+      <label for="projectSearch">Search projects</label>
+      <input type="search" id="projectSearch" placeholder="Type a keyword">
+      <p id="projectCount" role="status"></p>
 
       <div class="project-grid">
         <article class="project-card" data-category="uiux">
@@ -114,7 +120,11 @@
     <!-- CONTACT -->
     <section id="contact" class="section">
       <h2>Contact</h2>
-      <p>Email: <a href="mailto:your-email@example.com">nielluta@gmail.com</a></p>
+      <p>
+        Email: <a href="mailto:your-email@example.com" id="emailLink">nielluta@gmaill.com</a>
+        <button type="button" class="copy-btn" id="copyEmail">Copy email</button>
+        <span id="copyStatus" role="status"></span>
+      </p>
 
       <!-- JS feature 5: form validation (front-end only) -->
       <form id="contactForm" novalidate>
@@ -127,7 +137,8 @@
         <span class="error" id="emailError" role="alert"></span>
 
         <label for="message">Message</label>
-        <textarea id="message" name="message" rows="5" required></textarea>
+        <textarea id="message" name="message" rows="5" maxlength="300" required></textarea>
+        <span class="counter" id="messageCounter">0 / 300</span>
         <span class="error" id="messageError" role="alert"></span>
 
         <button type="submit" class="btn">Send message</button>
