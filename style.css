@@ -227,6 +227,13 @@ textarea:focus-visible {
   display: none;
 }
 
+.project-card img {
+  max-height: 320px;
+  width: auto;
+  margin: 0 auto;
+  object-fit: contain;
+}
+
 .project-card h3 {
   margin: 12px 0 6px;
 }
@@ -293,6 +300,14 @@ form .btn {
 }
 
 /* Extra feature styles */
+.figma-embed {
+  width: 100%;
+  height: 320px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  margin: 8px 0;
+}
+
 .greeting {
   font-size: 1.1rem;
   margin: 0 0 6px;
